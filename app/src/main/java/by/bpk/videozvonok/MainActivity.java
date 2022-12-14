@@ -2,12 +2,7 @@ package by.bpk.videozvonok;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.widget.Toast;
-
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.webkit.PermissionRequest;
@@ -17,25 +12,24 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-
-
 public class MainActivity extends AppCompatActivity {
 
     private class MyWebViewClient extends WebViewClient {
+        // Allow to open all links inside WebView with "return false"
+        // By default you can't do it
+        // Optionally you can set rules on per-domain basis
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
             /*if ("cls-stream.com".equals(request.getUrl().getHost())) {
-                // This is my website, so do not override; let my WebView load the page
+                // Let WebView load pages on this website
                 return false;
             }
-            // Otherwise, the link is not for a page on my site, so launch another Activity that handles URLs
-            Intent intent = new Intent(Intent.ACTION_VIEW, request.getUrl());
-            startActivity(intent);
+            // Do NOT let WebView follow links to all other sites
             return true;*/
             return false;
         }
     }
 
-
+    // Check if multiple permissions are granted
     public static boolean hasPermissions(Context context, String... permissions) {
         if (context != null && permissions != null) {
             for (String permission : permissions) {
@@ -47,63 +41,47 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-
-    // Function to check and request permission.
-    /*public void checkPermission(String permission, int requestCode)
-    {
-        if (ContextCompat.checkSelfPermission(MainActivity.this, permission) == PackageManager.PERMISSION_DENIED) {
-            // Requesting the permission
-            ActivityCompat.requestPermissions(MainActivity.this, new String[] { permission }, requestCode);
-        }else {
-            Toast.makeText(MainActivity.this, "Permission already granted", Toast.LENGTH_SHORT).show();
-        }
-    }*/
-
-
-    // Defining Permission codes
-    // Values are arbitrary and unique for each permission or for each permission group
-    private static final int CAMERA_PERMISSION_CODE = 100;
-    private static final int RECORD_AUDIO_PERMISSION_CODE = 120;
-    private static final int MODIFY_AUDIO_SETTINGS_PERMISSION_CODE = 121;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
-
-        //checkPermission(Manifest.permission.CAMERA, CAMERA_PERMISSION_CODE);
-        //checkPermission(Manifest.permission.RECORD_AUDIO, RECORD_AUDIO_PERMISSION_CODE);
-        //checkPermission(Manifest.permission.MODIFY_AUDIO_SETTINGS, MODIFY_AUDIO_SETTINGS_PERMISSION_CODE);
-
         // The request code used in ActivityCompat.requestPermissions()
         // and returned in the Activity's onRequestPermissionsResult()
+        // Values are arbitrary and unique for each permission or for
+        // each permission group
         int PERMISSION_ALL = 1;
+        // List of permissions we need
         String[] PERMISSIONS = {
-                //android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 android.Manifest.permission.RECORD_AUDIO,
-                //android.Manifest.permission.MODIFY_AUDIO_SETTINGS,
                 android.Manifest.permission.CAMERA
         };
 
+        // If some permissions were not already granted
         if (!hasPermissions(this, PERMISSIONS)) {
+            // Request multiple permissions
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
         }
 
         // Hide top bar with app name
         getSupportActionBar().hide();
+        // Create WebView to open website
         WebView myWebView = new WebView(MainActivity.this);
         WebSettings webSettings = myWebView.getSettings();
+        // Enable JavaScript for this WebView
         webSettings.setJavaScriptEnabled(true);
+        // To alter some WebView settings
         myWebView.setWebViewClient(new MyWebViewClient());
+        // Pass granted permissions from app to WebView
         myWebView.setWebChromeClient(new WebChromeClient() {
             // Request permissions inside WebView
             @Override
             public void onPermissionRequest(final PermissionRequest request) {
-                request.grant(request.getResources());
+            request.grant(request.getResources());
             }
         });
         setContentView(myWebView);
+        // Load site
         myWebView.loadUrl("https://cls-stream.com");
+        // URLs useful for testing
         //myWebView.loadUrl("https://html5test.com/");
         //myWebView.loadUrl("https://webcamtests.com/");
         //myWebView.loadUrl("https://mictests.com/");

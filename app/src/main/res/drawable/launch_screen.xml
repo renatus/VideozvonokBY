@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- The android:opacity=”opaque” line — this is critical in preventing a flash
-of black as your theme transitions. -->
+<!-- The android:opacity=”opaque” line - to prevent a flash
+of black at your theme transitions. -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" android:opacity="opaque">
-    <!-- Background color, preferably the same as your normal theme -->
+    <!-- Background color, preferably the same as one for your normal theme -->
     <item android:drawable="@android:color/white"/>
     <!-- App logo - app/res/drawable/stream_logo_240px.png -->
     <item>
