@@ -7,4 +7,18 @@
         <item name="colorAccent">@color/teal_200</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <!-- Launcher theme to get splash screen. It sets the main window
+    background to the launch_screen drawable. You need to enable it in
+    AndroidManifest.xml like this:
+    android:theme="@style/Theme.VideozvonokBY.Launcher"
+    No need to switch to Base application theme explicitly, at least if
+    your app is Android WebView-based
+    -->
+    <style name="Theme.VideozvonokBY.Launcher" parent="Theme.VideozvonokBY">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+        <!-- Optionally you can modify the colorPrimaryDark color to match
+        the windowBackground color -->
+        <!-- <item name="colorPrimaryDark">@android:color/white</item> -->
+    </style>
 </resources>
