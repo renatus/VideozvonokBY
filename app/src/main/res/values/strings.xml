@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Videozvonok BY</string>
+    <string name="app_label">Videocall BY</string>
+    <string name="app_description">Video calls and voice calls, videoconferencing</string>
 </resources>

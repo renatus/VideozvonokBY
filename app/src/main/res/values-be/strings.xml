@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Відэазванок BY</string>
+    <string name="app_description">Відэазванкі і галасавыя выклікі, відэаканферэнцыі</string>
+    <string name="app_label">Відэазванок BY</string>
 </resources>

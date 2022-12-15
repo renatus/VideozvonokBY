@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         });
         setContentView(myWebView);
         // Load site
-        myWebView.loadUrl("https://cls-stream.com");
+        myWebView.loadUrl("https://videozvonok.by");
         // URLs useful for testing
         //myWebView.loadUrl("https://html5test.com/");
         //myWebView.loadUrl("https://webcamtests.com/");
