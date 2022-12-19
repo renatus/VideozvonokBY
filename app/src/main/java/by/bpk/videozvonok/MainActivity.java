@@ -13,6 +13,18 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 public class MainActivity extends AppCompatActivity {
+    private WebView myWebView;
+
+    // If "Back" button was pressed, app shouldn't close
+    // page visited before should be opened rather
+    @Override
+    public void onBackPressed() {
+        if(myWebView.canGoBack()) {
+            myWebView.goBack();
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     private class MyWebViewClient extends WebViewClient {
         // Allow to open all links inside WebView with "return false"
@@ -64,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         // Hide top bar with app name
         getSupportActionBar().hide();
         // Create WebView to open website
-        WebView myWebView = new WebView(MainActivity.this);
+        myWebView = new WebView(MainActivity.this);
         WebSettings webSettings = myWebView.getSettings();
         // Enable JavaScript for this WebView
         webSettings.setJavaScriptEnabled(true);
