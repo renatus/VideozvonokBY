@@ -29,9 +29,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VideozvonokBY.Launcher"
         tools:targetApi="33">
+        <!-- To prevent app from reloading webpage on each screen autorotate, we need:
+        android:configChanges="orientation|screenSize">
+        and to check if savedInstanceState == null before loading site
+        myWebView.loadUrl("https://videozvonok.by");
+        in MainActivity.java super.onCreate
+        -->
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

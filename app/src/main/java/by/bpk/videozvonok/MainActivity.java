@@ -79,11 +79,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         setContentView(myWebView);
-        // Load site
-        myWebView.loadUrl("https://videozvonok.by");
-        // URLs useful for testing
-        //myWebView.loadUrl("https://html5test.com/");
-        //myWebView.loadUrl("https://webcamtests.com/");
-        //myWebView.loadUrl("https://mictests.com/");
+        // To prevent app from reloading webpage on each screen autorotate, we need:
+        // android:configChanges="orientation|screenSize">
+        // in AndroidManifest.xml <activity
+        // and to check if savedInstanceState == null before loading site
+        // myWebView.loadUrl("https://videozvonok.by");
+        // in MainActivity.java super.onCreate
+        if (savedInstanceState == null) {
+            // Load site
+            myWebView.loadUrl("https://videozvonok.by");
+            // URLs useful for testing
+            //myWebView.loadUrl("https://html5test.com/");
+            //myWebView.loadUrl("https://webcamtests.com/");
+            //myWebView.loadUrl("https://mictests.com/");
+        }
     }
 }
