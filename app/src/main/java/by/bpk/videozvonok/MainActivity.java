@@ -1,10 +1,13 @@
 package by.bpk.videozvonok;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.webkit.JavascriptInterface;
 import android.webkit.PermissionRequest;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -38,6 +41,38 @@ public class MainActivity extends AppCompatActivity {
             // Do NOT let WebView follow links to all other sites
             return true;*/
             return false;
+        }
+    }
+
+    // Java function to copy text to clipboard
+    // You don't need additional permissions in AndroidManifest.xml for this to work.
+    // You need to add to super.onCreate this to make it possible to call Java from JS:
+    // myWebView.addJavascriptInterface(new WebAppInterface(), "NativeAndroid");
+    // You'll call this function from JS code like this:
+    // NativeAndroid.copyToClipboard("Clipboard API Test");
+    // Clipboard is one of the permissions that are not implemented in Android WebView.
+    // So you can't use JS navigator.clipboard.writeText inside Android WebView-based app,
+    // it will silently fail.
+    // However you still need to implement it, if your app is available inside web browser
+    // as well as in AndroidWebView:
+    // Copy link to Clipboard Buffer and notify user
+    // function bpkLinkCopy(textToCopy, msgToUser){
+    //   if (typeof NativeAndroid !== 'undefined') {
+        // If we're	inside Anroid WebView app, copy	text with Java
+    //     NativeAndroid.copyToClipboard(textToCopy);
+    //   } else {
+        // If we're	inside normal browser, copy text with JS
+    //     navigator.clipboard.writeText(textToCopy);
+    //   }
+    // }
+    public class WebAppInterface {
+        @JavascriptInterface
+        public void copyToClipboard(String text) {
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            // ClipData "Label" is NOT being displayed to users
+            // unless app implements this functionality somehow
+            ClipData clip = ClipData.newPlainText("Copied text", text);
+            clipboard.setPrimaryClip(clip);
         }
     }
 
@@ -80,6 +115,8 @@ public class MainActivity extends AppCompatActivity {
         WebSettings webSettings = myWebView.getSettings();
         // Enable JavaScript for this WebView
         webSettings.setJavaScriptEnabled(true);
+        // Add interface to work with Java from JavaScript
+        myWebView.addJavascriptInterface(new WebAppInterface(), "NativeAndroid");
         // To alter some WebView settings
         myWebView.setWebViewClient(new MyWebViewClient());
         // Pass granted permissions from app to WebView
