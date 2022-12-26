@@ -3,7 +3,9 @@ package by.bpk.videozvonok;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,12 +36,31 @@ public class MainActivity extends AppCompatActivity {
         // By default you can't do it
         // Optionally you can set rules on per-domain basis
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            // Get request URL
+            String url = String.valueOf(request.getUrl());
+
+            // Let WebView follow links with custom prefix, like Telegram links
+            if(url.startsWith("tel:") ||
+               url.startsWith("whatsapp:") ||
+               url.startsWith("tg:") ||
+               url.startsWith("viber:") ||
+               url.startsWith("fb-messenger:") ||
+               url.startsWith("mailto:")
+            ) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+                myWebView.goBack();
+                return true;
+            }
             /*if ("cls-stream.com".equals(request.getUrl().getHost())) {
                 // Let WebView load pages on this website
                 return false;
             }
             // Do NOT let WebView follow links to all other sites
             return true;*/
+
+            // Let WebView follow links to all other sites
             return false;
         }
     }
@@ -118,6 +139,8 @@ public class MainActivity extends AppCompatActivity {
         // Add interface to work with Java from JavaScript
         myWebView.addJavascriptInterface(new WebAppInterface(), "NativeAndroid");
         // To alter some WebView settings
+        // Do not add code inside "new MyWebViewClient()", add it here:
+        // private class MyWebViewClient extends WebViewClient {
         myWebView.setWebViewClient(new MyWebViewClient());
         // Pass granted permissions from app to WebView
         myWebView.setWebChromeClient(new WebChromeClient() {
@@ -136,8 +159,9 @@ public class MainActivity extends AppCompatActivity {
         // in MainActivity.java super.onCreate
         if (savedInstanceState == null) {
             // Load site
-            myWebView.loadUrl("https://videozvonok.by");
+            //myWebView.loadUrl("https://videozvonok.by");
             // URLs useful for testing
+            myWebView.loadUrl("https://videozvonok.contacts.cls-lms.info");
             //myWebView.loadUrl("https://html5test.com/");
             //myWebView.loadUrl("https://webcamtests.com/");
             //myWebView.loadUrl("https://mictests.com/");
