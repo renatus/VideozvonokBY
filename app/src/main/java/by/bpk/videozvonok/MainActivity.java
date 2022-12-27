@@ -159,9 +159,9 @@ public class MainActivity extends AppCompatActivity {
         // in MainActivity.java super.onCreate
         if (savedInstanceState == null) {
             // Load site
-            //myWebView.loadUrl("https://videozvonok.by");
+            myWebView.loadUrl("https://videozvonok.by");
             // URLs useful for testing
-            myWebView.loadUrl("https://videozvonok.contacts.cls-lms.info");
+            //myWebView.loadUrl("https://videozvonok.contacts.cls-lms.info");
             //myWebView.loadUrl("https://html5test.com/");
             //myWebView.loadUrl("https://webcamtests.com/");
             //myWebView.loadUrl("https://mictests.com/");
